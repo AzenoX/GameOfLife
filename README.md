@@ -8,9 +8,16 @@ This python script runs the game of life
 ## Usage
 
 ```bash
-python main.py
+python main.py <figure>
 ```
 
+The **figure** argument is optional and can take these values:
+
+- beehive
+- pulsar
+- penta-decathlon
+- glider
+- lwss
 
 ### Todo
 
