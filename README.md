@@ -8,10 +8,10 @@ This python script runs the game of life
 ## Usage
 
 ```bash
-python main.py <size> <figure>
+python main.py <size> <figure> <window size>
 ```
 
-The **size** argument is optional, it defines the size of the grid
+The **size** argument is optional, it defines the size of the grid (must be an integer)
 
 The **figure** argument is optional and can take these values:
 - beehive
@@ -19,6 +19,8 @@ The **figure** argument is optional and can take these values:
 - penta-decathlon
 - glider
 - lwss
+
+The **size** argument is optional, it defines the size of the window (must be an integer)
 
 ### Todo
 
