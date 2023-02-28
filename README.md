@@ -8,11 +8,12 @@ This python script runs the game of life
 ## Usage
 
 ```bash
-python main.py <figure>
+python main.py <size> <figure>
 ```
 
-The **figure** argument is optional and can take these values:
+The **size** argument is optional, it defines the size of the grid
 
+The **figure** argument is optional and can take these values:
 - beehive
 - pulsar
 - penta-decathlon
@@ -22,5 +23,3 @@ The **figure** argument is optional and can take these values:
 ### Todo
 
 - Improve performances by using multiprocessing
-- Make default state customizable
-- Make the grid's size customizable

@@ -5,9 +5,6 @@ import time
 import sys
 
 
-size = 100
-
-
 def draw_grid(grid):
     glClear(GL_COLOR_BUFFER_BIT)
     glMatrixMode(GL_MODELVIEW)
@@ -185,6 +182,9 @@ def main():
 
 figure_name=None
 if __name__ == "__main__":
+    size = 100
     if len(sys.argv) > 1:
-        figure_name = sys.argv[1]
+        size = int(sys.argv[1])
+    if len(sys.argv) > 2:
+        figure_name = sys.argv[2]
     main()
