@@ -1,46 +1,14 @@
-import glfw
-from OpenGL.GL import *
 import numpy as np
 import time
 import sys
-
-
-def draw_grid(grid):
-    glClear(GL_COLOR_BUFFER_BIT)
-    glMatrixMode(GL_MODELVIEW)
-    glLoadIdentity()
-    glTranslatef(-1.0, 1.0, 0.0)
-    glScalef(5.0 / float(size), -5.0 / float(size), 1.0)
-
-    for i in range(size):
-        for j in range(size):
-            if grid[i][j] == 1:
-                glColor3f(0.0, 0.0, 0.0)  # black
-            else:
-                glColor3f(1.0, 1.0, 1.0)  # white
-            glBegin(GL_QUADS)
-            glVertex2f(i, j)
-            glVertex2f(i + 1, j)
-            glVertex2f(i + 1, j + 1)
-            glVertex2f(i, j + 1)
-            glEnd()
-
-
-def count_adjacent_alive_box(grid, x, y):
-    count = 0
-    for cx in range(max(0, x - 1), min(size - 1, x + 2)):
-        for cy in range(max(0, y - 1), min(size - 1, y + 2)):
-            if cx != x or cy != y:
-                if grid[cx][cy] == 1:
-                    count = count + 1
-    return count
+import pygame
 
 
 def update_grid(grid):
     grid_snap = grid.copy()
     for r in range(len(grid)):
         for c in range(len(grid[r])):
-            count = count_adjacent_alive_box(grid, r, c)
+            count = np.sum(grid[r-1:r+2, c-1:c+2]) - grid[r, c]
             # If this box is alive
             if grid[r][c] == 1:
                 if count != 2 and count != 3:
@@ -53,19 +21,9 @@ def update_grid(grid):
 
 
 def main():
-    if not glfw.init():
-        raise Exception("Error while init GLFW")
-
-    window = glfw.create_window(window_size, window_size, "Grid", None, None)
-    if not window:
-        glfw.terminate()
-        raise Exception("Error while creating the window")
-
-    glfw.make_context_current(window)
-
-    glClearColor(1.0, 1.0, 1.0, 1.0)
-
-    grid = np.zeros((size, size))
+    print(size_x)
+    print(size_y)
+    grid = np.zeros((size_x, size_y))
     if figure_name == "beehive":
         grid[20][20] = 1
         grid[21][20] = 1
@@ -163,30 +121,59 @@ def main():
         grid[5][8] = 1
         grid[2][8] = 1
     else:
-        grid = np.random.randint(low=0, high=2, size=(size, size))
+        grid = np.random.randint(low=0, high=2, size=(size_x, size_y))
 
-    while not glfw.window_should_close(window):
-        draw_grid(grid)
+    running = True
+    while running:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                running = False
 
-        glfw.poll_events()
+        screen.fill((255, 255, 255))
 
-        glfw.swap_buffers(window)
+        # Print cells
+        for i in range(size_x):
+            for j in range(size_y):
+                if grid[i, j] == 1:
+                    pygame.draw.rect(screen, (0, 0, 0), (j * cell_size, i * cell_size, cell_size, cell_size))
+
+        # Update screen
+        pygame.display.flip()
 
         grid = update_grid(grid)
 
-        time.sleep(0.1)
+        time.sleep(sleep_between_steps)
 
-    glfw.terminate()
+    pygame.quit()
 
 
 if __name__ == "__main__":
-    size = 100
+    cell_size = 5
+    res_x = 500
+    res_y = 500
+    size_x = 100
+    size_y = 100
     figure_name = None
-    window_size = 500
+    sleep_between_steps = 0
+
+    # Input arguments
     if len(sys.argv) > 1:
-        size = int(sys.argv[1])
+        figure_name = sys.argv[1]
     if len(sys.argv) > 2:
-        figure_name = sys.argv[2]
+        size_y = int(sys.argv[2].split(',')[0])
+        size_x = int(sys.argv[2].split(',')[1])
     if len(sys.argv) > 3:
-        window_size = int(sys.argv[3])
+        res_y = int(sys.argv[3].split(',')[0])
+        res_x = int(sys.argv[3].split(',')[1])
+    if len(sys.argv) > 4:
+        sleep_between_steps = int(sys.argv[4])
+
+    cell_size = int(min(res_x, res_y) / min(size_x, size_y))
+
+    # Pygame init
+    pygame.init()
+
+    # Create window
+    screen = pygame.display.set_mode((res_y, res_x))
+
     main()

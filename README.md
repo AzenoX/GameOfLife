@@ -8,10 +8,8 @@ This python script runs the game of life
 ## Usage
 
 ```bash
-python main.py <size> <figure> <window size>
+python main.py <figure> <size_x,size_y> <window_size_x,window_size_y> <sleep_between_steps>
 ```
-
-The **size** argument is optional, it defines the size of the grid (must be an integer)
 
 The **figure** argument is optional and can take these values:
 - beehive
@@ -20,8 +18,12 @@ The **figure** argument is optional and can take these values:
 - glider
 - lwss
 
-The **size** argument is optional, it defines the size of the window (must be an integer)
+The **size** argument is optional, it defines the size of the grid (must be an integer, separated by comma)
+
+The **window size** argument is optional, it defines the size of the window (must be an integer, separated by comma)
+
+The **sleep between steps** argument is optional, it defines the number of seconds between each step (can be a decimal)
 
 ### Todo
 
-- Improve performances by using multiprocessing
+- Idk, you can give suggestions if you want :)
