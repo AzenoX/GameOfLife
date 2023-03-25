@@ -21,8 +21,6 @@ def update_grid(grid):
 
 
 def main():
-    print(size_x)
-    print(size_y)
     grid = np.zeros((size_x, size_y))
     if figure_name == "beehive":
         grid[20][20] = 1
